@@ -1,0 +1,207 @@
+--[[
+    WOWUI 示例（WindUI MoonUI Mod 全组件演示）
+    ----------------------------------------
+    包含：Section / Paragraph / Button / Toggle / Slider / Input
+          Keybind / Dropdown(单选+多选) / Colorpicker / Code
+          悬浮窗 14 套流光主题切换 / 通知 / 窗口开合动画
+]]
+
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/LaPlua/Test/main/WindUI.lua"))()
+
+local Window = WindUI:CreateWindow({
+    Title = "WOWUI示例",
+    Icon = "moon",
+    Author = "WOWUI",
+    Folder = "WOWUI",
+    Size = UDim2.new(0, 580, 0, 460),
+    Transparent = true,
+    ToggleKey = Enum.KeyCode.RightShift, -- 按 RightShift 切换 窗口 ⇆ 悬浮窗
+    OpenButton = {
+        Theme = "极光紫", -- 悬浮窗初始主题
+    },
+})
+
+--------------------------------------------------
+-- 标签页 1：基础组件
+--------------------------------------------------
+local BasicTab = Window:Tab({
+    Title = "基础组件",
+    Icon = "layout-grid",
+})
+
+BasicTab:Section({ Title = "文本与按钮" })
+
+BasicTab:Paragraph({
+    Title = "WOWUI示例",
+    Desc = "这是一个 Paragraph 组件，可以展示标题和描述文字，下面还可以挂按钮。",
+    Buttons = {
+        {
+            Title = "点我",
+            Icon = "mouse-pointer-click",
+            Callback = function()
+                WindUI:Notify({
+                    Title = "WOWUI示例",
+                    Content = "Paragraph 里的按钮被点击了",
+                    Duration = 3,
+                })
+            end,
+        },
+    },
+})
+
+BasicTab:Button({
+    Title = "WOWUI示例按钮",
+    Desc = "普通的按钮组件",
+    Callback = function()
+        WindUI:Notify({
+            Title = "WOWUI示例",
+            Content = "按钮被点击了",
+            Duration = 3,
+        })
+    end,
+})
+
+BasicTab:Section({ Title = "开关与滑块" })
+
+BasicTab:Toggle({
+    Title = "WOWUI示例开关",
+    Desc = "开关组件",
+    Value = true,
+    Callback = function(state)
+        print("[WOWUI示例] 开关:", state)
+    end,
+})
+
+BasicTab:Slider({
+    Title = "WOWUI示例滑块",
+    Desc = "范围 0 ~ 100",
+    Step = 1,
+    Value = {
+        Min = 0,
+        Max = 100,
+        Default = 50,
+    },
+    Callback = function(value)
+        print("[WOWUI示例] 滑块:", value)
+    end,
+})
+
+BasicTab:Section({ Title = "输入与按键" })
+
+BasicTab:Input({
+    Title = "WOWUI示例输入框",
+    Desc = "输入点什么",
+    Placeholder = "请输入内容...",
+    InputIcon = "text-cursor-input",
+    Callback = function(text)
+        print("[WOWUI示例] 输入:", text)
+    end,
+})
+
+BasicTab:Keybind({
+    Title = "WOWUI示例按键绑定",
+    Desc = "点击后按任意键修改",
+    Value = "F",
+    CanChange = true,
+    Callback = function(key)
+        print("[WOWUI示例] 按下按键:", key)
+    end,
+})
+
+--------------------------------------------------
+-- 标签页 2：选择与颜色
+--------------------------------------------------
+local SelectTab = Window:Tab({
+    Title = "选择与颜色",
+    Icon = "sliders-horizontal",
+})
+
+SelectTab:Section({ Title = "下拉选择" })
+
+SelectTab:Dropdown({
+    Title = "WOWUI示例单选下拉",
+    Desc = "单选 Dropdown",
+    Values = { "选项一", "选项二", "选项三", "选项四" },
+    Value = "选项一",
+    Callback = function(value)
+        print("[WOWUI示例] 单选:", value)
+    end,
+})
+
+SelectTab:Dropdown({
+    Title = "WOWUI示例多选下拉",
+    Desc = "多选 Dropdown",
+    Values = { "苹果", "香蕉", "橘子", "西瓜" },
+    Value = { "苹果" },
+    Multi = true,
+    Callback = function(values)
+        print("[WOWUI示例] 多选:", table.concat(values, ", "))
+    end,
+})
+
+SelectTab:Section({ Title = "颜色与代码" })
+
+SelectTab:Colorpicker({
+    Title = "WOWUI示例取色器",
+    Desc = "选一个颜色",
+    Default = Color3.fromRGB(140, 60, 220),
+    Callback = function(color)
+        print("[WOWUI示例] 颜色:", color)
+    end,
+})
+
+SelectTab:Code({
+    Title = "WOWUI示例代码块",
+    Code = 'print("WOWUI示例")\nWindow:SetFloatTheme("彩虹")',
+})
+
+--------------------------------------------------
+-- 标签页 3：悬浮窗主题
+--------------------------------------------------
+local FloatTab = Window:Tab({
+    Title = "悬浮窗主题",
+    Icon = "palette",
+})
+
+FloatTab:Section({ Title = "流光主题（14 套）" })
+
+FloatTab:Dropdown({
+    Title = "WOWUI示例悬浮窗主题",
+    Desc = "切换最小化悬浮窗的流光配色",
+    Values = WindUI.FloatThemeOrder,
+    Value = "极光紫",
+    Callback = function(themeName)
+        Window:SetFloatTheme(themeName)
+    end,
+})
+
+FloatTab:Button({
+    Title = "随机主题",
+    Desc = "随机换一套流光配色",
+    Callback = function()
+        local list = WindUI.FloatThemeOrder
+        local pick = list[math.random(1, #list)]
+        WindUI:SetFloatTheme(pick)
+        WindUI:Notify({
+            Title = "WOWUI示例",
+            Content = "悬浮窗主题已切换为: " .. pick,
+            Duration = 2,
+        })
+    end,
+})
+
+FloatTab:Section({ Title = "悬浮窗预览" })
+
+FloatTab:Button({
+    Title = "关闭窗口查看悬浮窗",
+    Desc = "主窗口收起后，屏幕顶部出现流光药丸，点击药丸重新打开",
+    Callback = function()
+        Window:Close()
+    end,
+})
+
+WindUI:Notify({
+    Title = "WOWUI示例",
+    Content = "加载完成！按 RightShift 可切换窗口/悬浮窗",
+    Duration = 4,
+})
