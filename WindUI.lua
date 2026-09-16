@@ -103,7 +103,7 @@ l.SetIconsType"lucide"
 local m
 
 local p={
-Font="rbxassetid://12187365364",
+Font="rbxasset://fonts/families/LuckiestGuy.json",
 Localization=nil,
 CanDraggable=true,
 Theme=nil,
