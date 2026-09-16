@@ -17,8 +17,7 @@
       Window:EditOpenButton{...}      -> 支持 Theme / Position / Draggable / Title / Color(ColorSequence)
 ]]
 
--- 把下面地址换成你托管 WindUI.lua 的地址
-local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/你的用户名/你的仓库/main/WindUI.lua"))()
+local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/LaPlua/Test/main/WindUI.lua"))()
 
 local Window = WindUI:CreateWindow({
     Title = "WOW",
