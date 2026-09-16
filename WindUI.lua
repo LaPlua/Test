@@ -4162,27 +4162,17 @@ Button=nil,
 CurrentTheme="极光紫",
 }
 
-local ah
-local ai
-
-local aj=ac("Frame",{
+local ak=ac("Frame",{
 Name="FloatPill",
 Size=UDim2.new(0,210,0,38),
 Position=UDim2.new(0.5,0,0,15),
 AnchorPoint=Vector2.new(0.5,0),
 Parent=af.Parent,
-BackgroundTransparency=1,
-Active=true,
-Visible=false,
-})
-
-local ak=ac("Frame",{
-Name="Pill",
-Size=UDim2.new(0,0,0,38),
-AutomaticSize="X",
-Parent=aj,
 BackgroundColor3=Color3.fromRGB(220,100,255),
 BorderSizePixel=0,
+ClipsDescendants=true,
+Active=true,
+Visible=false,
 },{
 ac("UIScale",{
 Scale=.6,
@@ -4193,28 +4183,18 @@ CornerRadius=UDim.new(1,0),
 ac("UIGradient",{
 Color=BuildGradient(aa.Themes[ag.CurrentTheme]),
 }),
-ac("UIListLayout",{
-Padding=UDim.new(0,6),
-FillDirection="Horizontal",
-VerticalAlignment="Center",
-}),
-ac("UIPadding",{
-PaddingLeft=UDim.new(0,16),
-PaddingRight=UDim.new(0,16),
-}),
 })
 
-ai=ac("TextLabel",{
+local ai=ac("TextLabel",{
 Name="Title",
-AutomaticSize="X",
-Size=UDim2.new(0,0,1,0),
+Position=UDim2.new(0,0,0,6.5),
+Size=UDim2.new(1,0,1,-7),
 BackgroundTransparency=1,
 Font=Enum.Font.LuckiestGuy,
 Text=af.Title or "WindUI",
 TextColor3=Color3.new(1,1,1),
 TextSize=16,
-LayoutOrder=1,
-ZIndex=2,
+ZIndex=3,
 Parent=ak,
 })
 
@@ -4230,34 +4210,15 @@ Parent=ak,
 ag.Button=ak
 
 function ag.SetIcon(al,am)
-if ah then
-ah:Destroy()
-ah=nil
-end
-if am then
-ah=ab.Image(am,af.Title,0,af.Folder,"OpenButton",true,af.IconThemed)
-ah.Size=UDim2.new(0,18,0,18)
-ah.LayoutOrder=0
-ah.BackgroundTransparency=1
-ah.Parent=ak
-end
 end
 
-if af.Icon then
-ag:SetIcon(af.Icon)
-end
-
-ab.AddSignal(ak:GetPropertyChangedSignal"AbsoluteSize",function()
-aj.Size=UDim2.new(0,ak.AbsoluteSize.X,0,ak.AbsoluteSize.Y)
-end)
-
-local an=ab.Drag(aj)
+local an=ab.Drag(ak)
 
 local ao=false
 function ag.Visible(ap,aq)
 if aq then
 ao=true
-aj.Visible=true
+ak.Visible=true
 ak.UIScale.Scale=.6
 ad(ak.UIScale,.35,{Scale=1},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
 else
@@ -4266,7 +4227,7 @@ local ar=ad(ak.UIScale,.22,{Scale=.6},Enum.EasingStyle.Quint,Enum.EasingDirectio
 ar:Play()
 ar.Completed:Connect(function()
 if not ao then
-aj.Visible=false
+ak.Visible=false
 end
 end)
 end
@@ -4287,7 +4248,10 @@ if aq.Enabled==false then
 af.IsOpenButtonEnabled=false
 end
 if aq.Position then
-aj.Position=aq.Position
+ak.Position=aq.Position
+end
+if aq.Size then
+ak.Size=aq.Size
 end
 if aq.Draggable~=nil then
 an:Set(aq.Draggable)
